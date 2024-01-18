@@ -15,7 +15,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.*;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_ID;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_SECRET;
 
 @RestController
 @RequestMapping("/token")
@@ -40,7 +41,7 @@ public class TokenRestController {
         HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
         try {
-            map = restTemplate.postForObject("http://127.0.0.1:8003/info", httpEntity, Map.class);
+            map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/info", request.getServerPort()), httpEntity, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("msg", "Token Bearer 无效");
@@ -57,7 +58,7 @@ public class TokenRestController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String accessToken = "http://127.0.0.1:8003/info?access_token=" + token;
+        String accessToken = String.format("http://127.0.0.1:%d/info?access_token=%s", request.getServerPort(), token);
 
         try {
             map = restTemplate.getForObject(accessToken, Map.class);
@@ -90,7 +91,7 @@ public class TokenRestController {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
         try {
-            map = restTemplate.postForObject(TOKEN_URI, httpEntity, Map.class);
+            map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", request.getServerPort()), httpEntity, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("msg", "无法刷新 Token");

@@ -22,8 +22,7 @@ logging:
     # 在微服务中，直接使用 `web: debug` 无效
     web: debug
     # org.springframework.web: debug
-    org.springframework.security: debug
-    org.springframework.security.jackson2: info
+    org.springframework.security.web: debug
     # 包：日志等级
     cn.com.xuxiaowei: debug
   # 日志文件

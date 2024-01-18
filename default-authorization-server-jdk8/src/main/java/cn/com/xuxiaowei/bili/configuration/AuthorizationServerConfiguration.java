@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -43,11 +44,23 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfiguration {
 
+    public static final String USERNAME = "user";
+    public static final String PASSWORD = "password";
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET = "client_secret";
-    public static final String REDIRECT_URI = "http://127.0.0.1:8001/code";
-    public static final String TOKEN_URI = "http://127.0.0.1:8001/oauth2/token";
+    public static final String SCOPE = "snsapi_base";
 
+    private int serverPort;
+
+    @Value("${server.port}")
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    /**
+     * @see org.springframework.security.web.server.ui.LoginPageGeneratingWebFilter
+     * @see org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter
+     */
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -94,7 +107,7 @@ public class AuthorizationServerConfiguration {
             jwtCustomizer.decoder(nimbusJwtDecoder);
 
             // 方案2：
-            // jwtCustomizer.jwkSetUri("http://127.0.0.1:8001/oauth2/jwks");
+            // jwtCustomizer.jwkSetUri(String.format("http://127.0.0.1:%d/oauth2/jwks", serverPort));
         });
 
         return http.build();
@@ -118,9 +131,9 @@ public class AuthorizationServerConfiguration {
                 //
                 .withDefaultPasswordEncoder()
                 //
-                .username("user")
+                .username(USERNAME)
                 //
-                .password("password")
+                .password(PASSWORD)
                 //
                 .roles("USER")
                 //
@@ -161,9 +174,9 @@ public class AuthorizationServerConfiguration {
                 // 授权类型：
                 .authorizationGrantType(AuthorizationGrantType.IMPLICIT)
                 // 授权成功后重定向地址
-                .redirectUri(REDIRECT_URI)
+                .redirectUri(String.format("http://127.0.0.1:%d/code", serverPort))
                 // 授权范围
-                .scope("snsapi_base")
+                .scope(SCOPE)
                 //
                 .clientSettings(ClientSettings.builder().build())
                 //

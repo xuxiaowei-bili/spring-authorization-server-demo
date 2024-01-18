@@ -15,7 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.*;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_ID;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_SECRET;
 
 @Controller
 public class CodeController {
@@ -23,6 +24,9 @@ public class CodeController {
     @RequestMapping(value = "/code")
     @SuppressWarnings("unchecked")
     public String code(HttpServletRequest request, HttpServletResponse response, String code, String state, Model model) {
+
+        int serverPort = request.getServerPort();
+        model.addAttribute("serverPort", serverPort + "");
 
         if (StringUtils.hasText(code)) {
             HttpSession session = request.getSession();
@@ -40,11 +44,13 @@ public class CodeController {
                 Map<String, String> param = new HashMap<>();
                 param.put("code", code);
                 param.put("grant_type", "authorization_code");
-                param.put("redirect_uri", REDIRECT_URI);
+                param.put("redirect_uri", String.format("http://127.0.0.1:%d/code", serverPort));
                 HttpEntity<HttpHeaders> httpEntity = new HttpEntity<>(httpHeaders);
 
+                String url = String.format("http://127.0.0.1:%d/oauth2/token?grant_type=authorization_code&code={code}&redirect_uri={redirect_uri}", serverPort);
+
                 try {
-                    map = restTemplate.postForObject(ACCESS_TOKEN_URI, httpEntity, Map.class, param);
+                    map = restTemplate.postForObject(url, httpEntity, Map.class, param);
                     session.setAttribute(code, map);
                 } catch (Exception e) {
                     e.printStackTrace();

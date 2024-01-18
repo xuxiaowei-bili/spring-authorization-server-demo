@@ -16,6 +16,9 @@ public class IndexController {
     @RequestMapping
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
+        int serverPort = request.getServerPort();
+        model.addAttribute("serverPort", serverPort + "");
+
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String name = authentication.getName();

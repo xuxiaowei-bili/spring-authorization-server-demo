@@ -17,7 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.Map;
 
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.*;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_ID;
+import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_SECRET;
 
 @Controller
 public class CodeController {
@@ -25,6 +26,9 @@ public class CodeController {
     @RequestMapping(value = "/code")
     @SuppressWarnings("unchecked")
     public String code(HttpServletRequest request, HttpServletResponse response, String code, String state, Model model) {
+
+        int serverPort = request.getServerPort();
+        model.addAttribute("serverPort", serverPort + "");
 
         if (StringUtils.hasText(code)) {
             HttpSession session = request.getSession();
@@ -42,11 +46,11 @@ public class CodeController {
                 MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
                 requestBody.put("code", Collections.singletonList(code));
                 requestBody.put("grant_type", Collections.singletonList("authorization_code"));
-                requestBody.put("redirect_uri", Collections.singletonList(REDIRECT_URI));
+                requestBody.put("redirect_uri", Collections.singletonList(String.format("http://127.0.0.1:%d/code", serverPort)));
                 HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
 
                 try {
-                    map = restTemplate.postForObject(TOKEN_URI, httpEntity, Map.class);
+                    map = restTemplate.postForObject(String.format("http://127.0.0.1:%d/oauth2/token", serverPort), httpEntity, Map.class);
                     session.setAttribute(code, map);
                 } catch (Exception e) {
                     e.printStackTrace();
