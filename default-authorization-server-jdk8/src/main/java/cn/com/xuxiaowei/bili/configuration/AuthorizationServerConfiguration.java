@@ -1,4 +1,4 @@
-package cn.com.xuxiaowei.bili.config;
+package cn.com.xuxiaowei.bili.configuration;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -22,9 +22,11 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.web.authentication.ClientSecretBasicAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.NimbusJwkSetEndpointFilter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.*;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -43,6 +45,8 @@ public class AuthorizationServerConfiguration {
 
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET = "client_secret";
+    public static final String REDIRECT_URI = "http://127.0.0.1:8001/code";
+    public static final String TOKEN_URI = "http://127.0.0.1:8001/oauth2/token";
 
     @Bean
     @Order(1)
@@ -56,6 +60,10 @@ public class AuthorizationServerConfiguration {
         return http.build();
     }
 
+    /**
+     * @see NimbusJwkSetEndpointFilter
+     * @see OAuth2AuthorizationServerConfigurer#configure(HttpSecurity)
+     */
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, KeyPair keyPair) throws Exception {
@@ -63,6 +71,9 @@ public class AuthorizationServerConfiguration {
         // 表单登录处理从授权服务器过滤器链到登录页面的重定向
         http.authorizeHttpRequests((authorize) -> {
             authorize
+                    //
+                    .mvcMatchers("/favicon.ico").permitAll()
+                    //
                     .mvcMatchers("/code").permitAll()
                     //
                     .mvcMatchers("/token/check-bearer").permitAll()
@@ -76,10 +87,14 @@ public class AuthorizationServerConfiguration {
 
         // 凭证验证
         http.oauth2ResourceServer().jwt(jwtCustomizer -> {
+            // 方案1：
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             NimbusJwtDecoder.PublicKeyJwtDecoderBuilder publicKeyJwtDecoderBuilder = NimbusJwtDecoder.withPublicKey(publicKey);
             NimbusJwtDecoder nimbusJwtDecoder = publicKeyJwtDecoderBuilder.build();
             jwtCustomizer.decoder(nimbusJwtDecoder);
+
+            // 方案2：
+            // jwtCustomizer.jwkSetUri("http://127.0.0.1:8001/oauth2/jwks");
         });
 
         return http.build();
@@ -114,7 +129,16 @@ public class AuthorizationServerConfiguration {
     }
 
     /**
+     * {@link ClientAuthenticationMethod#BASIC}：
      * {@link ClientAuthenticationMethod#CLIENT_SECRET_BASIC}：{@link ClientSecretBasicAuthenticationConverter#convert(HttpServletRequest)}
+     * {@link ClientAuthenticationMethod#POST}：
+     * {@link ClientAuthenticationMethod#CLIENT_SECRET_POST}：{@link ClientSecretPostAuthenticationConverter#convert(HttpServletRequest)}
+     * {@link ClientAuthenticationMethod#CLIENT_SECRET_JWT}：
+     * {@link ClientAuthenticationMethod#PRIVATE_KEY_JWT}：
+     * {@link ClientAuthenticationMethod#NONE}：
+     * {@link AuthorizationGrantType#AUTHORIZATION_CODE}：{@link OAuth2AuthorizationCodeAuthenticationConverter#convert(HttpServletRequest)}
+     * {@link AuthorizationGrantType#REFRESH_TOKEN}：{@link OAuth2RefreshTokenAuthenticationConverter#convert(HttpServletRequest)}
+     * {@link AuthorizationGrantType#CLIENT_CREDENTIALS}：{@link OAuth2ClientCredentialsAuthenticationConverter#convert(HttpServletRequest)}
      */
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
@@ -137,7 +161,7 @@ public class AuthorizationServerConfiguration {
                 // 授权类型：
                 .authorizationGrantType(AuthorizationGrantType.IMPLICIT)
                 // 授权成功后重定向地址
-                .redirectUri("http://127.0.0.1:8001/code")
+                .redirectUri(REDIRECT_URI)
                 // 授权范围
                 .scope("snsapi_base")
                 //
