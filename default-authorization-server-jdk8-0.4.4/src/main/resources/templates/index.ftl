@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Spring Authorization Server 默认授权服务 JDK 8</title>
+    <title>Spring Authorization Server 默认授权服务 JDK 8 0.4.4</title>
     <link rel="shortcut icon" href="/images/icon-48x48.png">
 </head>
 <body>
