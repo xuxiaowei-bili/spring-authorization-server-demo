@@ -8,13 +8,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-authorization-server-demo</name>
     <description>Spring Authorization Server 示例</description>
-    <properties>
-        <java.version>8</java.version>
-    </properties>
 
     <modules>
         <module>default-authorization-server-jdk8</module>
         <module>default-authorization-server-jdk8-0.4.4</module>
+        <module>default-authorization-server-jdk17</module>
+        <module>default-authorization-server-jdk17-1.2.0</module>
     </modules>
 
 </project>
