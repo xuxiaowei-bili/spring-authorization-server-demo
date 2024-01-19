@@ -24,7 +24,8 @@
 3. 1.x 之前的版本，使用依赖 `org.springframework.security:spring-security-oauth2-authorization-server:0.3.1` 之前的版本（包含），
    `ClientSettings` 的包名是 `org.springframework.security.oauth2.server.authorization.config`
 4. 1.x 之前的版本，使用依赖 `org.springframework.security:spring-security-oauth2-authorization-server:0.3.1` 之后的版本（不包含），
-   `ClientSettings` 的包名是 `org.springframework.security.oauth2.server.authorization.settings`
+   `ClientSettings` 的包名是 `org.springframework.security.oauth2.server.authorization.settings`，
+   （改包名了），源码提交记录为：https://github.com/spring-projects/spring-authorization-server/commit/3877999a
 
 ### [默认授权服务 JDK 17](default-authorization-server-jdk17)
 
