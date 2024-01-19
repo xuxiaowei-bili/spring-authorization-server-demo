@@ -30,8 +30,26 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-jdk-8
+
       - name: JDK Version
         run: java --version
 
       - name: Maven Version
         run: mvn --version
+
+      - name: build JDK 17
+        run: mvn clean package -DskipTests=false
+
+      - name: build JDK 17 1.2.0
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.2.0
+
+      - name: build JDK 17 0.3.0
+        run: |
+          echo "注意：org.springframework.security:spring-security-oauth2-authorization-server:0.3.0 是使用 JDK 11.0.15 构建的"
+          echo "MANIFEST.MF 链接：https://s01.oss.sonatype.org/service/local/repositories/releases/archive/org/springframework/security/spring-security-oauth2-authorization-server/0.3.0/spring-security-oauth2-authorization-server-0.3.0.jar/!/META-INF/MANIFEST.MF"
+          mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.3.0
