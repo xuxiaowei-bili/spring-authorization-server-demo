@@ -29,8 +29,6 @@ build:jdk-8:
 
 build:jdk-8-0.4.5:
   stage: build
-  needs:
-    - job: build:jdk-8
   image: maven:3.6.3-jdk-8
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8 -Dspring-authorization-server.version=0.4.5
@@ -77,8 +75,6 @@ build:jdk-8-0.4.0:
 
 build:jdk-8-0.3.1:
   stage: build
-  needs:
-    - job: build:jdk-8-0.4.0
   image: maven:3.6.3-jdk-8
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.3.1
@@ -95,8 +91,6 @@ build:jdk-17-0.3.0:
 
 build:jdk-8-0.2.3:
   stage: build
-  needs:
-    - job: build:jdk-17-0.3.0
   image: maven:3.6.3-jdk-8
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.2.3
@@ -133,8 +127,6 @@ build:jdk-17:
 
 build:jdk-17-1.2.1:
   stage: build
-  needs:
-    - job: build:jdk-17
   image: maven:3.6.3-openjdk-17
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.2.1
@@ -149,8 +141,6 @@ build:jdk-17-1.2.0:
 
 build:jdk-17-1.1.4:
   stage: build
-  needs:
-    - job: build:jdk-17-1.2.0
   image: maven:3.6.3-openjdk-17
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.1.4
@@ -189,8 +179,6 @@ build:jdk-17-1.1.0:
 
 build:jdk-17-1.0.4:
   stage: build
-  needs:
-    - job: build:jdk-17-1.1.0
   image: maven:3.6.3-openjdk-17
   script:
     - mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.4
