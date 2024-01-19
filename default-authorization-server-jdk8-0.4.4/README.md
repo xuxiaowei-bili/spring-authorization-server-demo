@@ -1,9 +1,9 @@
 # 默认授权服务 JDK 8 0.4.4
 
-## 注意
+## 版本说明
 
-1. 使用依赖 `org.springframework.security:spring-security-oauth2-authorization-server:0.4.4` 之前的版本（包含），
-   Token 接口的 `Content-Type` 可使用 `application/json`
+1. 使用依赖：`org.springframework.security:spring-security-oauth2-authorization-server:0.4.4`
+2. [版本差异](../README.md)
 
 ## 查看 Spring Authorization Server 默认提供的端点
 

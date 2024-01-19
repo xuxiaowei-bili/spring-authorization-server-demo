@@ -1,11 +1,9 @@
 # 默认授权服务 JDK 17
 
-## 注意
+## 版本说明
 
-1. 1.x 之后的版本，从 `org.springframework.security:spring-security-oauth2-authorization-server:1.2.1` 开始，
-   Token 接口的 `Content-Type` 只能使用 `application/x-www-form-urlencoded`，
-   源码提交记录为 https://github.com/spring-projects/spring-authorization-server/commit/4bc0df5e ，
-   议题为 https://github.com/spring-projects/spring-authorization-server/issues/1451
+1. 使用依赖：`org.springframework.security:spring-security-oauth2-authorization-server:1.2.1`
+2. [版本差异](../README.md)
 
 ## 查看 Spring Authorization Server 默认提供的端点
 
