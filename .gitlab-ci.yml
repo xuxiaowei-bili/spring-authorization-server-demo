@@ -81,7 +81,7 @@ build:jdk-8-0.3.1:
     - job: build:jdk-8-0.4.0
   image: maven:3.6.3-jdk-8
   script:
-    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.3.1
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.3.1
 
 build:jdk-17-0.3.0:
   stage: build
