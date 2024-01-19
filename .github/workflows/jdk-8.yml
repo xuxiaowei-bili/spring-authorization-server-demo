@@ -31,7 +31,7 @@ jobs:
           cache: maven
 
       - name: JDK Version
-        run: java --version
+        run: java -version
 
       - name: Maven Version
         run: mvn --version
