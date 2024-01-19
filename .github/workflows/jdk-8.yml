@@ -45,6 +45,9 @@ jobs:
       - name: build JDK 8
         run: mvn clean package -DskipTests=false -pl !default-authorization-server-jdk17,!default-authorization-server-jdk17-1.2.0
 
+      - name: build JDK 8 0.4.5
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8 -Dspring-authorization-server.version=0.4.5
+
       - name: build JDK 8 0.4.4
         run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.4
 
@@ -59,6 +62,9 @@ jobs:
 
       - name: build JDK 8 0.4.0
         run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.0
+
+      - name: build JDK 8 0.3.1
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.3.1
 
       - name: build JDK 8 0.2.3
         run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8-0.3.1 -Dspring-authorization-server.version=0.2.3
