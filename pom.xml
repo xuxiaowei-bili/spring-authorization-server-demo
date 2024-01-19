@@ -11,6 +11,7 @@
 
     <modules>
         <module>default-authorization-server-jdk8</module>
+        <module>default-authorization-server-jdk8-0.3.1</module>
         <module>default-authorization-server-jdk8-0.4.4</module>
         <module>default-authorization-server-jdk17</module>
         <module>default-authorization-server-jdk17-1.2.0</module>
