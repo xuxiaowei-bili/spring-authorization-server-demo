@@ -16,6 +16,8 @@
     <properties>
         <java.version>17</java.version>
 
+        <spring-authorization-server.version>1.2.0</spring-authorization-server.version>
+
         <!-- 打包时跳过单元测试 -->
         <skipTests>true</skipTests>
     </properties>
@@ -25,7 +27,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-authorization-server</artifactId>
-            <version>1.2.0</version>
+            <version>${spring-authorization-server.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->

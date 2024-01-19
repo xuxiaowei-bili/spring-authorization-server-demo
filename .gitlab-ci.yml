@@ -27,8 +27,56 @@ build:jdk-8:
   script:
     - mvn clean package -DskipTests=false -pl !default-authorization-server-jdk17,!default-authorization-server-jdk17-1.2.0
 
+build:jdk-8-0.4.4:
+  stage: build
+  needs:
+    - job: build:jdk-8
+  image: maven:3.6.3-jdk-8
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8 -Dspring-authorization-server.version=0.4.4
+
+build:jdk-8-0.4.3:
+  stage: build
+  needs:
+    - job: build:jdk-8-0.4.4
+  image: maven:3.6.3-jdk-8
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.3
+
+build:jdk-8-0.4.2:
+  stage: build
+  needs:
+    - job: build:jdk-8-0.4.3
+  image: maven:3.6.3-jdk-8
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.2
+
+build:jdk-8-0.4.1:
+  stage: build
+  needs:
+    - job: build:jdk-8-0.4.2
+  image: maven:3.6.3-jdk-8
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.1
+
+build:jdk-8-0.4.0:
+  stage: build
+  needs:
+    - job: build:jdk-8-0.4.1
+  image: maven:3.6.3-jdk-8
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk8,default-authorization-server-jdk8-0.4.4 -Dspring-authorization-server.version=0.4.0
+
 build:jdk-17:
   stage: build
   image: maven:3.6.3-openjdk-17
   script:
     - mvn clean package -DskipTests=false
+
+build:jdk-17-1.2.0:
+  stage: build
+  needs:
+    - job: build:jdk-17
+  image: maven:3.6.3-openjdk-17
+  script:
+    - mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.2.0
