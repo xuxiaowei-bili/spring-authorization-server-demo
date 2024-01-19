@@ -47,13 +47,37 @@ jobs:
         run: mvn clean package -DskipTests=false
 
       - name: build JDK 17 1.2.0
-        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.2.0
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.2.0
 
       - name: build JDK 17 1.1.4
         run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.1.4
 
       - name: build JDK 17 1.1.3
-        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17 -Dspring-authorization-server.version=1.1.3
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.1.3
+
+      - name: build JDK 17 1.1.2
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.1.2
+
+      - name: build JDK 17 1.1.1
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.1.1
+
+      - name: build JDK 17 1.1.0
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.1.0
+
+      - name: build JDK 17 1.0.4
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.4
+
+      - name: build JDK 17 1.0.3
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.3
+
+      - name: build JDK 17 1.0.2
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.2
+
+      - name: build JDK 17 1.0.1
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.1
+
+      - name: build JDK 17 1.0.0
+        run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk17,default-authorization-server-jdk17-1.2.0 -Dspring-authorization-server.version=1.0.0
 
       - name: build JDK 17 0.3.0
         run: |
