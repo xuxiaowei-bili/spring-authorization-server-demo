@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DefaultAuthorizationServerJdk17ApplicationTests {
+class DefaultAuthorizationServerJdk8031ApplicationTests {
 
     @Autowired
     private WebClient webClient;

@@ -1,5 +1,6 @@
 package cn.com.xuxiaowei.bili;
 
+import cn.com.xuxiaowei.bili.properties.AuthorizationServerProperties;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +12,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.io.IOException;
 
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.PASSWORD;
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -26,8 +25,14 @@ class DefaultAuthorizationServerJdk8ApplicationTests {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private AuthorizationServerProperties authorizationServerProperties;
+
     @Test
     void contextLoads() throws IOException, InterruptedException {
+
+        String username = authorizationServerProperties.getUsername();
+        String password = authorizationServerProperties.getPassword();
 
         // 访问登陆页面
         HtmlPage loginPage = webClient.getPage("/login");
@@ -35,8 +40,8 @@ class DefaultAuthorizationServerJdk8ApplicationTests {
         // 输入用户名、密码
         HtmlInput usernameInput = loginPage.querySelector("input[name=\"username\"]");
         HtmlInput passwordInput = loginPage.querySelector("input[name=\"password\"]");
-        usernameInput.type(USERNAME);
-        passwordInput.type(PASSWORD);
+        usernameInput.type(username);
+        passwordInput.type(password);
 
         // 登录
         HtmlButton signInButton = loginPage.querySelector("button");

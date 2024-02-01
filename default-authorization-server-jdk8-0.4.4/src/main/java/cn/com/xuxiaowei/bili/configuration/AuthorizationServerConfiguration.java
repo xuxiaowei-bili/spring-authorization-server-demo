@@ -1,10 +1,12 @@
 package cn.com.xuxiaowei.bili.configuration;
 
+import cn.com.xuxiaowei.bili.properties.AuthorizationServerProperties;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,11 +46,12 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfiguration {
 
-    public static final String USERNAME = "user";
-    public static final String PASSWORD = "password";
-    public static final String CLIENT_ID = "client_id";
-    public static final String CLIENT_SECRET = "client_secret";
-    public static final String SCOPE = "snsapi_base";
+    private AuthorizationServerProperties authorizationServerProperties;
+
+    @Autowired
+    public void setAuthorizationServerProperties(AuthorizationServerProperties authorizationServerProperties) {
+        this.authorizationServerProperties = authorizationServerProperties;
+    }
 
     private int serverPort;
 
@@ -127,13 +130,17 @@ public class AuthorizationServerConfiguration {
     @Bean
     @SuppressWarnings("deprecation")
     public UserDetailsService userDetailsService() {
+
+        String username = authorizationServerProperties.getUsername();
+        String password = authorizationServerProperties.getPassword();
+
         UserDetails userDetails = User
                 //
                 .withDefaultPasswordEncoder()
                 //
-                .username(USERNAME)
+                .username(username)
                 //
-                .password(PASSWORD)
+                .password(password)
                 //
                 .roles("USER")
                 //
@@ -156,11 +163,15 @@ public class AuthorizationServerConfiguration {
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
 
+        String clientId = authorizationServerProperties.getClientId();
+        String clientSecret = authorizationServerProperties.getClientSecret();
+        String scope = authorizationServerProperties.getScope();
+
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 // 客户ID
-                .clientId(CLIENT_ID)
+                .clientId(clientId)
                 // 客户凭证：密码使用明文
-                .clientSecret("{noop}" + CLIENT_SECRET)
+                .clientSecret("{noop}" + clientSecret)
                 // 客户凭证验证方式：
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 // 客户凭证验证方式：
@@ -176,7 +187,7 @@ public class AuthorizationServerConfiguration {
                 // 授权成功后重定向地址
                 .redirectUri(String.format("http://127.0.0.1:%d/code", serverPort))
                 // 授权范围
-                .scope(SCOPE)
+                .scope(scope)
                 //
                 .clientSettings(ClientSettings.builder().build())
                 //

@@ -1,5 +1,7 @@
 package cn.com.xuxiaowei.bili.controller;
 
+import cn.com.xuxiaowei.bili.properties.AuthorizationServerProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,15 +17,22 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_ID;
-import static cn.com.xuxiaowei.bili.configuration.AuthorizationServerConfiguration.CLIENT_SECRET;
-
 @Controller
 public class CodeController {
+
+    private AuthorizationServerProperties authorizationServerProperties;
+
+    @Autowired
+    public void setAuthorizationServerProperties(AuthorizationServerProperties authorizationServerProperties) {
+        this.authorizationServerProperties = authorizationServerProperties;
+    }
 
     @RequestMapping(value = "/code")
     @SuppressWarnings("unchecked")
     public String code(HttpServletRequest request, HttpServletResponse response, String code, String state, Model model) {
+
+        String clientId = authorizationServerProperties.getClientId();
+        String clientSecret = authorizationServerProperties.getClientSecret();
 
         int serverPort = request.getServerPort();
         model.addAttribute("serverPort", serverPort + "");
@@ -40,7 +49,7 @@ public class CodeController {
                 RestTemplate restTemplate = new RestTemplate();
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                httpHeaders.setBasicAuth(CLIENT_ID, CLIENT_SECRET);
+                httpHeaders.setBasicAuth(clientId, clientSecret);
                 Map<String, String> param = new HashMap<>();
                 param.put("code", code);
                 param.put("grant_type", "authorization_code");
