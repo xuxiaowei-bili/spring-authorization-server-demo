@@ -43,7 +43,7 @@ jobs:
         run: mvn --version
 
       - name: build JDK 8
-        run: mvn clean package -DskipTests=false -pl !default-authorization-server-jdk17,!default-authorization-server-jdk17-1.2.0
+        run: mvn clean package -DskipTests=false -pl !default-authorization-server-jdk17,!default-authorization-server-jdk17-1.2.0,!device-code/device-code-authorization-server-jdk17-1.2.0,!device-code/device-code-client
 
       - name: build JDK 8 0.4.5
         run: mvn clean package -DskipTests=false -pl default-authorization-server-jdk8 -Dspring-authorization-server.version=0.4.5
