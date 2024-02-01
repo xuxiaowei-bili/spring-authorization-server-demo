@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DefaultAuthorizationServerJdk8044Application {
+public class DefaultAuthorizationServerJdk8031Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(DefaultAuthorizationServerJdk8044Application.class, args);
+        SpringApplication.run(DefaultAuthorizationServerJdk8031Application.class, args);
     }
 
 }
